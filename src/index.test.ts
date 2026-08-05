@@ -54,10 +54,22 @@ describe("Blockbuster Index Lambda@Edge Handler", () => {
     expect(result?.uri).toBe("/about.html");
   });
 
+  it("should rewrite paths that normalize to root as /index.html", async () => {
+    const event = getMockEvent("/foo/..");
+    const result = (await handler(event)) as CloudFrontRequest;
+    expect(result?.uri).toBe("/index.html");
+  });
+
   it("should not append .html when URI already has an extension", async () => {
     const event = getMockEvent("/robots.txt");
     const result = (await handler(event)) as CloudFrontRequest;
     expect(result?.uri).toBe("/robots.txt");
+  });
+
+  it("should lowercase paths without an extension", async () => {
+    const event = getMockEvent("/About");
+    const result = (await handler(event)) as CloudFrontRequest;
+    expect(result?.uri).toBe("/about.html");
   });
 });
 
@@ -140,7 +152,7 @@ describe("Redirect logic for canonical domain", () => {
     });
   });
 
-  it("redirects with protocol from cloudfront-forwarded-proto header", async () => {
+  it("always redirects to https even when forwarded proto is http", async () => {
     const event = getEventWithHost("/about", "blockbusterindex.com", "http");
     const result = await handler(event);
     expect(result).toMatchObject({
@@ -149,7 +161,23 @@ describe("Redirect logic for canonical domain", () => {
         location: [
           {
             key: "Location",
-            value: "http://www.blockbusterindex.com/about.html",
+            value: "https://www.blockbusterindex.com/about.html",
+          },
+        ],
+      },
+    });
+  });
+
+  it("redirects case-insensitively for the apex host header", async () => {
+    const event = getEventWithHost("/about", "BlockbusterIndex.com");
+    const result = await handler(event);
+    expect(result).toMatchObject({
+      status: "301",
+      headers: {
+        location: [
+          {
+            key: "Location",
+            value: "https://www.blockbusterindex.com/about.html",
           },
         ],
       },
@@ -230,6 +258,22 @@ describe("Redirect logic for canonical domain", () => {
           {
             key: "Location",
             value: "https://www.blockbusterindex.com/robots.txt",
+          },
+        ],
+      },
+    });
+  });
+
+  it("redirects paths that normalize to root without appending .html", async () => {
+    const event = getEventWithHost("/foo/..", "blockbusterindex.com");
+    const result = await handler(event);
+    expect(result).toMatchObject({
+      status: "301",
+      headers: {
+        location: [
+          {
+            key: "Location",
+            value: "https://www.blockbusterindex.com/",
           },
         ],
       },

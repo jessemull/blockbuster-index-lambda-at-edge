@@ -13,22 +13,6 @@ module.exports = {
   resolve: {
     extensions: [".ts", ".js"],
   },
-  externals: {
-    assert: "commonjs assert",
-    buffer: "commonjs buffer",
-    crypto: "commonjs crypto",
-    events: "commonjs events",
-    fs: "commonjs fs",
-    http: "commonjs http",
-    https: "commonjs https",
-    module: "commonjs module",
-    os: "commonjs os",
-    path: "commonjs path",
-    stream: "commonjs stream",
-    url: "commonjs url",
-    util: "commonjs util",
-    vm: "commonjs vm",
-  },
   module: {
     rules: [
       {

@@ -33,6 +33,7 @@ Resources:
     Type: AWS::Lambda::Version
     Properties:
       FunctionName: !Ref BlockbusterLambdaAtEdgeFunction
+      Description: !Sub "blockbuster-index-lambda-at-edge-${Environment}"
 
 Outputs:
   BlockbusterLambdaAtEdgeFunctionArn:

@@ -4,7 +4,7 @@ The **Blockbuster Index** is an AI-powered exploration of how consumer buying ha
 
 The **Blockbuster Index** website visualizes these scores and trends, providing users with an engaging way to see how retail behaviors vary geographically, combining humor and data-driven insights.
 
-The **Blockbuster Index Project Lamdba@Edge** provides deep linking for the **Blockbuster Index Project** website.
+The **Blockbuster Index Project Lambda@Edge** provides deep linking for the **Blockbuster Index Project** website.
 
 This repository is part of the **Blockbuster Index Project** which includes the following repositories:
 
@@ -19,7 +19,7 @@ This repository is part of the **Blockbuster Index Project** which includes the 
 3. [Tech Stack](#tech-stack)
 4. [Setup Instructions](#setup-instructions)
 5. [Commits and Commitizen](#commits-and-commitizen)
-   - [Making A Commit](#making-a-commit)
+   - [Making a Commit](#making-a-commit)
 6. [Linting & Formatting](#linting--formatting)
    - [Linting Commands](#linting-commands)
    - [Formatting Commands](#formatting-commands)
@@ -66,7 +66,7 @@ The **Blockbuster Index** operates in multiple environments to ensure smooth dev
 
 ## Tech Stack
 
-This project leverages modern web and cloud technologies to provide secure, scalable, and efficient authentication for CloudFront distributions.
+This project leverages modern web and cloud technologies to provide secure, scalable, and efficient request routing for CloudFront distributions.
 
 - **AWS Lambda@Edge**: Provides request routing logic at CloudFront's edge locations, enabling low-latency redirects.
 
@@ -114,7 +114,7 @@ This project uses **Commitizen** to ensure commit messages follow a structured f
 
 ### Making a Commit
 
-To make a commit in the correct format, run the following command. Commitzen will walk the user through the creation of a structured commit message and versioning:
+To make a commit in the correct format, run the following command. Commitizen will walk the user through the creation of a structured commit message and versioning:
 
 ```bash
 npm run commit
@@ -231,8 +231,7 @@ The pull request pipeline is triggered when a pull request is opened against the
 
 1. **Build:** Builds and packages the lambda using webpack.
 2. **Linting:** Runs linting checks.
-3. **Testing:** Runs unit tests.
-4. **Code Coverage:** Checks code coverage remains above 80%.
+3. **Testing:** Runs unit tests with an 80% coverage threshold enforced by Jest.
 
 This pipeline is defined in the `.github/workflows/pull-request.yml` file.
 
@@ -242,12 +241,11 @@ The deploy pipeline is triggered manually via a workflow dispatch event, allowin
 
 1. **Build:** Builds and packages the lambda using webpack.
 2. **Linting:** Runs linting checks.
-3. **Testing:** Runs unit tests.
-4. **Code Coverage:** Checks code coverage remains above 80%.
-5. **Artifact Generation:** Generates a versioned artifact name.
-6. **S3 Upload:** Uploads the packaged lambda to S3.
-7. **CloudFormation Deployment:** Creates, executes and monitors a change set.
-8. **Backup Pruning:** Ensures only the latest five lambda package versions are stored in S3.
+3. **Testing:** Runs unit tests with an 80% coverage threshold enforced by Jest.
+4. **Artifact Generation:** Generates a versioned artifact name.
+5. **S3 Upload:** Uploads the packaged lambda to S3.
+6. **CloudFormation Deployment:** Creates, executes and monitors a change set.
+7. **Backup Pruning:** Ensures only the latest five lambda package versions are stored in S3.
 
 This pipeline is defined in the `.github/workflows/deploy.yml` file.
 
@@ -257,12 +255,11 @@ The merge pipeline is triggered on a merged commit to main. It deploys the lambd
 
 1. **Build:** Builds and packages the lambda using webpack.
 2. **Linting:** Runs linting checks.
-3. **Testing:** Run unit tests.
-4. **Code Coverage:** Checks code coverage remains above 80%.
-5. **Artifact Generation:** Generates a versioned artifact name.
-6. **S3 Upload:** Uploads the packaged lambda to S3.
-7. **CloudFormation Deployment:** Creates, executes and monitors a change set.
-8. **Backup Pruning:** Ensures only the latest five lambda package versions are stored in S3.
+3. **Testing:** Runs unit tests with an 80% coverage threshold enforced by Jest.
+4. **Artifact Generation:** Generates a versioned artifact name.
+5. **S3 Upload:** Uploads the packaged lambda to S3.
+6. **CloudFormation Deployment:** Creates, executes and monitors a change set.
+7. **Backup Pruning:** Ensures only the latest five lambda package versions are stored in S3.
 
 This pipeline is defined in the `.github/workflows/merge.yml` file.
 
@@ -282,7 +279,7 @@ npm run bastion
 
 ### Environment Variables
 
-The following environment variables must be set in a `.env` file in the root of the project:
+The following environment variables must be set in a `.env` file in the root of the project (see `.env.example`):
 
 | Variable               | Description                               |
 | ---------------------- | ----------------------------------------- |

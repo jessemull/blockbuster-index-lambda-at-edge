@@ -42,7 +42,7 @@ Resources:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                Resource: "arn:aws:logs:*:*:*"
+                Resource: "arn:aws:logs:*:*:log-group:/aws/lambda/*"
 
 Outputs:
   BlockbusterLambdaAtEdgeExecutionRoleArn:

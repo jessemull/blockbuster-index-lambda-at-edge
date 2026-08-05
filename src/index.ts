@@ -38,11 +38,8 @@ export const handler = async (
 
   // Redirect non-canonical domain to canonical domain (blockbusterindex.com -> www.blockbusterindex.com)...
 
-  const hostHeader = headers["host"]?.[0]?.value;
+  const hostHeader = headers["host"]?.[0]?.value?.toLowerCase();
   if (hostHeader === "blockbusterindex.com") {
-    const protocol =
-      headers["cloudfront-forwarded-proto"]?.[0]?.value || "https";
-
     const requestPath = request.uri || "/";
     let redirectPath: string;
 
@@ -54,8 +51,12 @@ export const handler = async (
         return request;
       }
 
-      const hasExtension = /\.[a-zA-Z0-9]+$/.test(normalizedUri);
-      redirectPath = hasExtension ? normalizedUri : `${normalizedUri}.html`;
+      if (normalizedUri === "/") {
+        redirectPath = "/";
+      } else {
+        const hasExtension = /\.[a-zA-Z0-9]+$/.test(normalizedUri);
+        redirectPath = hasExtension ? normalizedUri : `${normalizedUri}.html`;
+      }
     }
 
     const querystring = request.querystring ? `?${request.querystring}` : "";
@@ -67,7 +68,7 @@ export const handler = async (
         location: [
           {
             key: "Location",
-            value: `${protocol}://www.blockbusterindex.com${redirectPath}${querystring}`,
+            value: `https://www.blockbusterindex.com${redirectPath}${querystring}`,
           },
         ],
       },
@@ -81,6 +82,11 @@ export const handler = async (
 
   const normalizedUri = normalizeUri(request.uri);
   if (normalizedUri === null) {
+    return request;
+  }
+
+  if (normalizedUri === "/") {
+    request.uri = "/index.html";
     return request;
   }
 
