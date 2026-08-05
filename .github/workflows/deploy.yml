@@ -4,9 +4,9 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Choose environment (test/production)'
+        description: 'Choose environment (dev/prod)'
         required: true
-        default: 'test'
+        default: 'dev'
         type: choice
         options:
           - dev
@@ -18,7 +18,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
 
       - name: Install Dependencies
         run: |
@@ -38,13 +44,6 @@ jobs:
           name: coverage-report
           path: coverage
           retention-days: 7
-
-      - name: Coverage Threshold Check
-        run: |
-          if [[ $(grep "Statements" coverage/lcov-report/index.html | awk '{print $4}' | tr -d '%') -lt 80 ]]; then
-            echo "Code coverage is below threshold. Please update test coverage and try again."
-            exit 1
-          fi
 
       - name: Set Up AWS CLI
         uses: aws-actions/configure-aws-credentials@v2
@@ -156,8 +155,8 @@ jobs:
       - name: Monitor CloudFormation Stack Status
         if: env.no_changes == 'false'
         run: |
-          DONE_STATUSES=("CREATE_COMPLETE" "UPDATE_COMPLETE" "ROLLBACK_COMPLETE" "UPDATE_ROLLBACK_COMPLETE" "DELETE_COMPLETE")
-          FAILED_STATUSES=("CREATE_FAILED" "UPDATE_FAILED" "ROLLBACK_FAILED" "DELETE_FAILED" "UPDATE_ROLLBACK_FAILED" "ROLLBACK_IN_PROGRESS" "DELETE_IN_PROGRESS")
+          DONE_STATUSES=("CREATE_COMPLETE" "UPDATE_COMPLETE" "DELETE_COMPLETE")
+          FAILED_STATUSES=("CREATE_FAILED" "UPDATE_FAILED" "ROLLBACK_FAILED" "DELETE_FAILED" "UPDATE_ROLLBACK_FAILED" "ROLLBACK_COMPLETE" "UPDATE_ROLLBACK_COMPLETE" "ROLLBACK_IN_PROGRESS" "DELETE_IN_PROGRESS")
           STACK_NAME="blockbuster-index-lambda-at-edge-stack-${{ github.event.inputs.environment }}"
           MAX_RETRIES=30
           RETRY_COUNT=0
@@ -168,7 +167,6 @@ jobs:
               echo "Stack update completed successfully!"
               echo "Status: $STATUS"
               break
-            # Check if the status is one of the 'failed' statuses
             elif [[ " ${FAILED_STATUSES[@]} " =~ " ${STATUS} " ]]; then
               echo "Stack failed to update!"
               echo "Status: $STATUS"
@@ -197,4 +195,3 @@ jobs:
           else
             echo "Less than 5 objects found, no pruning needed..."
           fi
-

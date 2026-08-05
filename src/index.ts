@@ -1,5 +1,34 @@
-import path from "path";
 import { CloudFrontRequestEvent, CloudFrontRequestResult } from "aws-lambda";
+
+/**
+ * Normalize a URL path: decode, collapse repeated slashes, resolve `.` / `..`,
+ * strip trailing slashes, and lowercase. Returns null if decoding fails.
+ */
+const normalizeUri = (uri: string): string | null => {
+  let decoded: string;
+  try {
+    decoded = decodeURIComponent(uri);
+  } catch {
+    return null;
+  }
+
+  const segments = decoded.split("/");
+  const resolved: string[] = [];
+
+  for (const segment of segments) {
+    if (segment === "" || segment === ".") {
+      continue;
+    }
+    if (segment === "..") {
+      resolved.pop();
+      continue;
+    }
+    resolved.push(segment);
+  }
+
+  const normalized = `/${resolved.join("/")}`.replace(/\/+$/, "") || "/";
+  return normalized.toLowerCase();
+};
 
 export const handler = async (
   event: CloudFrontRequestEvent,
@@ -14,21 +43,18 @@ export const handler = async (
     const protocol =
       headers["cloudfront-forwarded-proto"]?.[0]?.value || "https";
 
-    let requestPath = request.uri || "/";
+    const requestPath = request.uri || "/";
     let redirectPath: string;
 
     if (requestPath === "/") {
       redirectPath = "/";
     } else {
-      const [uriWithoutQuery] = requestPath.split("?");
-
-      const normalizedUri = path
-        .normalize(decodeURIComponent(uriWithoutQuery))
-        .replace(/\/+$/, "")
-        .toLowerCase();
+      const normalizedUri = normalizeUri(requestPath);
+      if (normalizedUri === null) {
+        return request;
+      }
 
       const hasExtension = /\.[a-zA-Z0-9]+$/.test(normalizedUri);
-
       redirectPath = hasExtension ? normalizedUri : `${normalizedUri}.html`;
     }
 
@@ -50,24 +76,21 @@ export const handler = async (
 
   if (request.uri === "/") {
     request.uri = "/index.html";
+    return request;
   }
 
-  let uri = request.uri;
-
-  const [uriWithoutQuery] = uri.split("?");
-
-  const normalizedUri = path
-    .normalize(decodeURIComponent(uriWithoutQuery))
-    .replace(/\/+$/, "")
-    .toLowerCase();
+  const normalizedUri = normalizeUri(request.uri);
+  if (normalizedUri === null) {
+    return request;
+  }
 
   const hasExtension = /\.[a-zA-Z0-9]+$/.test(normalizedUri);
 
   if (!hasExtension) {
-    uri = `${normalizedUri}.html${uri.includes("?") ? "?" + uri.split("?")[1] : ""}`;
+    request.uri = `${normalizedUri}.html`;
+  } else {
+    request.uri = normalizedUri;
   }
-
-  request.uri = uri;
 
   return request;
 };

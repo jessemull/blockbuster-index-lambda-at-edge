@@ -1,9 +1,5 @@
-const webpack = require("webpack");
 const path = require("path");
-const dotenv = require("dotenv");
 const TerserPlugin = require("terser-webpack-plugin");
-
-dotenv.config();
 
 module.exports = {
   entry: "./src/index.ts",

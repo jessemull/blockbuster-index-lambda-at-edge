@@ -41,11 +41,7 @@ This repository is part of the **Blockbuster Index Project** which includes the 
    - [Rollback](#rollback)
 10. [Connecting to the Bastion Host](#connecting-to-the-bastion-host)
     - [Environment Variables](#environment-variables)
-11. [Cognito Access Token](#cognito-access-token)
-    - [Generating An Access Token](#generating-an-access-token)
-    - [Using An Access Token](#using-an-access-token)
-    - [Environment Variables](#environment-variables)
-12. [License](#license)
+11. [License](#license)
 
 ## Project Overview
 
@@ -253,7 +249,7 @@ The deploy pipeline is triggered manually via a workflow dispatch event, allowin
 7. **CloudFormation Deployment:** Creates, executes and monitors a change set.
 8. **Backup Pruning:** Ensures only the latest five lambda package versions are stored in S3.
 
-This pipeline is defined in the `.github/workflows/deploy-lambda.yml` file.
+This pipeline is defined in the `.github/workflows/deploy.yml` file.
 
 ### Merge
 
@@ -286,7 +282,7 @@ npm run bastion
 
 ### Environment Variables
 
-The following environment variables must be set in a `.env.local` file in the root of the project:
+The following environment variables must be set in a `.env` file in the root of the project:
 
 | Variable               | Description                               |
 | ---------------------- | ----------------------------------------- |

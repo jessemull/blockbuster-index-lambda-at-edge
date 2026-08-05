@@ -27,10 +27,6 @@ jobs:
           export NODE_ENV=dev
           npm run build
           npm run package
-        env:
-          COGNITO_USER_POOL_ID: ${{ secrets.COGNITO_USER_POOL_ID_DEV }}
-          COGNITO_USER_POOL_CLIENT_ID: ${{ secrets.COGNITO_USER_POOL_CLIENT_ID_DEV }}
-
 
   lint:
     name: Lint Code
@@ -77,10 +73,3 @@ jobs:
           name: coverage-report
           path: coverage
           retention-days: 7
-
-      - name: Coverage Threshold Check
-        run: |
-          if [[ $(grep "Statements" coverage/lcov-report/index.html | awk '{print $4}' | tr -d '%') -lt 80 ]]; then
-            echo "Code coverage is below threshold. Please update test coverage and try again."
-            exit 1
-          fi

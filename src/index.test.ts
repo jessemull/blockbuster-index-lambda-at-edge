@@ -1,14 +1,15 @@
 import { CloudFrontRequest, CloudFrontRequestEvent } from "aws-lambda";
 import { handler } from "./index";
 
-const getMockEvent = (uri = "/admin", cookie?: string) =>
+const getMockEvent = (uri = "/admin", querystring = "") =>
   ({
     Records: [
       {
         cf: {
           request: {
             uri,
-            headers: cookie ? { cookie: [{ value: cookie }] } : {},
+            querystring,
+            headers: {},
           },
         },
       },
@@ -16,22 +17,10 @@ const getMockEvent = (uri = "/admin", cookie?: string) =>
   }) as unknown as CloudFrontRequestEvent;
 
 describe("Blockbuster Index Lambda@Edge Handler", () => {
-  let originalConsoleError: typeof console.error;
-
-  beforeEach(() => {
-    jest.clearAllMocks();
-    originalConsoleError = console.error;
-    console.error = jest.fn();
-  });
-
-  afterEach(() => {
-    console.error = originalConsoleError;
-  });
-
-  it("should return the request for URIs", async () => {
+  it("should rewrite root URI to /index.html", async () => {
     const event = getMockEvent("/");
-    const result = await handler(event);
-    expect(result).toEqual(event.Records[0].cf.request);
+    const result = (await handler(event)) as CloudFrontRequest;
+    expect(result.uri).toBe("/index.html");
   });
 
   it("should normalize and append .html if no extension", async () => {
@@ -40,16 +29,35 @@ describe("Blockbuster Index Lambda@Edge Handler", () => {
     expect(result?.uri).toBe("/about.html");
   });
 
-  it("should preserve query string when adding .html", async () => {
-    const event = getMockEvent("/about?foo=bar");
+  it("should leave querystring on the request when adding .html", async () => {
+    const event = getMockEvent("/about", "foo=bar");
     const result = (await handler(event)) as CloudFrontRequest;
-    expect(result?.uri).toBe("/about.html?foo=bar");
+    expect(result?.uri).toBe("/about.html");
+    expect(result?.querystring).toBe("foo=bar");
   });
 
   it("should handle uri with trailing slashes", async () => {
     const event = getMockEvent("/about////");
     const result = (await handler(event)) as CloudFrontRequest;
     expect(result?.uri).toBe("/about.html");
+  });
+
+  it("should leave the request unchanged for a malformed URI", async () => {
+    const event = getMockEvent("/%zz");
+    const result = (await handler(event)) as CloudFrontRequest;
+    expect(result?.uri).toBe("/%zz");
+  });
+
+  it("should resolve parent path segments", async () => {
+    const event = getMockEvent("/foo/../about");
+    const result = (await handler(event)) as CloudFrontRequest;
+    expect(result?.uri).toBe("/about.html");
+  });
+
+  it("should not append .html when URI already has an extension", async () => {
+    const event = getMockEvent("/robots.txt");
+    const result = (await handler(event)) as CloudFrontRequest;
+    expect(result?.uri).toBe("/robots.txt");
   });
 });
 
@@ -155,14 +163,14 @@ describe("Redirect logic for canonical domain", () => {
     expect((result as CloudFrontRequest).uri).toBe("/about.html");
   });
 
-  it("redirects with default headers object when headers is undefined", async () => {
+  it("rewrites when headers is undefined", async () => {
     const event = {
       Records: [
         {
           cf: {
             request: {
               uri: "/about",
-              // No headers property...
+              querystring: "",
             },
           },
         },
@@ -179,8 +187,8 @@ describe("Redirect logic for canonical domain", () => {
         {
           cf: {
             request: {
-              // No uri property...
               headers: { host: [{ value: "blockbusterindex.com" }] },
+              querystring: "",
             },
           },
         },
@@ -200,7 +208,7 @@ describe("Redirect logic for canonical domain", () => {
     });
   });
 
-  it("redirects with .html only if hasExtension is false, otherwise uses normalizedUri (hasExtension true)", async () => {
+  it("redirects with extension intact when URI already has one", async () => {
     const event = {
       Records: [
         {
@@ -208,6 +216,7 @@ describe("Redirect logic for canonical domain", () => {
             request: {
               uri: "/robots.txt",
               headers: { host: [{ value: "blockbusterindex.com" }] },
+              querystring: "",
             },
           },
         },
@@ -225,5 +234,12 @@ describe("Redirect logic for canonical domain", () => {
         ],
       },
     });
+  });
+
+  it("returns request unchanged for malformed URI on redirect host", async () => {
+    const event = getEventWithHost("/%zz", "blockbusterindex.com");
+    const result = (await handler(event)) as CloudFrontRequest;
+    expect(result).not.toHaveProperty("status", "301");
+    expect(result.uri).toBe("/%zz");
   });
 });
