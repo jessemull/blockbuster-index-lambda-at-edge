@@ -1,0 +1,22 @@
+---
+description: "Jest testing and coverage requirements for the Edge handler."
+globs:
+  - "**/*.test.ts"
+  - jest.config.js
+---
+
+# Testing Rules
+
+See `docs/TESTING.md`.
+
+## MUST
+
+- Cover behavior changes with Jest tests
+- Mock CloudFront events with separate `uri` / `querystring` / `headers`
+- Keep coverage thresholds ≥ 80% (branches, functions, lines, statements)
+- Include edge cases: trailing slashes, `..`, malformed encoding, host casing
+
+## MUST NOT
+
+- Drop or bypass `coverageThreshold` without human review
+- Embed `?query` inside mock `uri` fields

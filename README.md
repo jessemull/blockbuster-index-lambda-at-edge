@@ -14,34 +14,54 @@ This repository is part of the **Blockbuster Index Project** which includes the 
 
 ## Table of Contents
 
-1. [Project Overview](#project-overview)
-2. [Environments](#environments)
-3. [Tech Stack](#tech-stack)
-4. [Setup Instructions](#setup-instructions)
-5. [Commits and Commitizen](#commits-and-commitizen)
+1. [Agent & contributor docs](#agent--contributor-docs)
+2. [Project Overview](#project-overview)
+3. [Environments](#environments)
+4. [Tech Stack](#tech-stack)
+5. [Setup Instructions](#setup-instructions)
+6. [Commits and Commitizen](#commits-and-commitizen)
    - [Making a Commit](#making-a-commit)
-6. [Linting & Formatting](#linting--formatting)
+7. [Linting & Formatting](#linting--formatting)
    - [Linting Commands](#linting-commands)
    - [Formatting Commands](#formatting-commands)
    - [Pre-Commit Hook](#pre-commit-hook)
-7. [Testing & Code Coverage](#testing--code-coverage)
+8. [Testing & Code Coverage](#testing--code-coverage)
    - [Testing Commands](#testing-commands)
    - [Code Coverage](#code-coverage)
-8. [Building & Packaging](#building--packaging)
+9. [Building & Packaging](#building--packaging)
    - [Summary](#summary)
    - [Install](#install)
    - [Build](#build)
    - [Package](#package)
-9. [Deployment Pipelines](#deployment-pipelines)
-   - [Deployment Strategy](#deployment-strategy)
-   - [Tools Used](#tools-used)
-   - [Pull Request](#pull-request)
-   - [Deploy](#deploy)
-   - [Merge](#merge)
-   - [Rollback](#rollback)
-10. [Connecting to the Bastion Host](#connecting-to-the-bastion-host)
+10. [Deployment Pipelines](#deployment-pipelines)
+    - [Deployment Strategy](#deployment-strategy)
+    - [Tools Used](#tools-used)
+    - [Pull Request](#pull-request)
+    - [Deploy](#deploy)
+    - [Merge](#merge)
+    - [Rollback](#rollback)
+11. [Connecting to the Bastion Host](#connecting-to-the-bastion-host)
     - [Environment Variables](#environment-variables)
-11. [License](#license)
+12. [License](#license)
+
+## Agent & contributor docs
+
+AI agents and contributors should start here:
+
+| Doc                                            | Purpose                                                             |
+| ---------------------------------------------- | ------------------------------------------------------------------- |
+| [`CONTEXT.md`](CONTEXT.md)                     | Primary agent entry — reading order, non-negotiables, quality gates |
+| [`AGENTS.md`](AGENTS.md)                       | Coding rules and project map                                        |
+| [`docs/CONTRIBUTING.md`](docs/CONTRIBUTING.md) | Branch, commit, and PR workflow                                     |
+| [`docs/REVIEW.md`](docs/REVIEW.md)             | PR review severity framework                                        |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Handler and infrastructure design                                   |
+| [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md)     | Deploy, CloudFront association, rollback                            |
+
+Quality front door:
+
+```bash
+make preflight
+```
 
 ## Project Overview
 

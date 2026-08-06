@@ -1,0 +1,25 @@
+name: Governance change
+description: Propose a change to CONTEXT/AGENTS/docs or quality gates
+labels: [governance]
+body:
+  - type: textarea
+    id: change
+    attributes:
+      label: Proposed change
+      description: Which governance docs or gates should change?
+    validations:
+      required: true
+  - type: textarea
+    id: rationale
+    attributes:
+      label: Rationale
+      description: Why is the current rule insufficient?
+    validations:
+      required: true
+  - type: textarea
+    id: risk
+    attributes:
+      label: Risk
+      description: What could go wrong if we adopt this?
+    validations:
+      required: true

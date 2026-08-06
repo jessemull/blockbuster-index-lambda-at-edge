@@ -1,0 +1,25 @@
+---
+description: "Secrets, IAM, and S3 security constraints."
+globs:
+  - "**/.env*"
+  - "**/*role*.yaml"
+  - "**/*s3*.yaml"
+  - .github/workflows/**
+  - scripts/**
+---
+
+# Security Rules
+
+See `docs/SECURITY.md`.
+
+## MUST
+
+- Keep secrets out of git; update `.env.example` for new vars
+- Prefer least-privilege IAM and blocked-public S3
+- Use GitHub Actions secrets for AWS credentials
+
+## MUST NOT
+
+- Commit `.env`, PEMs, or access keys
+- Broaden IAM `Resource: "*"` without human review
+- Bake env files into the webpack bundle

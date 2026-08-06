@@ -1,0 +1,22 @@
+---
+description: "Comment spacing and documentation style for TypeScript."
+globs:
+  - "**/*.ts"
+  - "**/*.tsx"
+  - "**/*.js"
+---
+
+# Comment Rules
+
+See `docs/COMMENTS.md`.
+
+## MUST
+
+- Prefer why-comments over what-comments
+- Put empty lines around standalone comments (with block start/end exceptions)
+- Place JSDoc directly above declarations (no blank line between)
+
+## MUST NOT
+
+- Leave large commented-out dead code
+- Restate the next line of code in a comment

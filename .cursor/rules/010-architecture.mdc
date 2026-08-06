@@ -1,0 +1,27 @@
+---
+description: "Lambda@Edge handler and CloudFormation architecture constraints."
+globs:
+  - src/**
+  - template.yaml
+  - "*.yaml"
+  - webpack.config.js
+---
+
+# Architecture Rules
+
+See `docs/ARCHITECTURE.md`.
+
+## MUST
+
+- Keep viewer-request handler CPU-only (no fetch, AWS SDK, or fs I/O)
+- Use CloudFront `uri` + `querystring` separately
+- Preserve HTTPS apex→www redirect behavior
+- Handle malformed URIs without throwing
+- Keep webpack bundle minimal (no production dependencies)
+
+## MUST NOT
+
+- Parse query strings out of `uri`
+- Use Node `path.normalize` for URL paths
+- Expand IAM or CF exports casually — human review required
+- Commit build output (`dist/`) as source of truth

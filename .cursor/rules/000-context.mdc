@@ -1,0 +1,33 @@
+---
+description: "Mandatory governance context loading and non-negotiable constraints before any repository changes."
+alwaysApply: true
+---
+
+# Repository Context Loading
+
+Context loading is **not optional** — it is the first step before any work in this repository.
+
+## Before ANY changes
+
+Read in order:
+
+1. `CONTEXT.md`
+2. `AGENTS.md`
+3. `docs/GOVERNANCE.md`
+4. `docs/ARCHITECTURE.md`
+5. `docs/TESTING.md`
+6. `docs/SECURITY.md`
+7. `docs/CI_CD.md`
+
+## MUST
+
+- [ ] Read `CONTEXT.md` first
+- [ ] Follow source-of-truth precedence
+- [ ] Run `make preflight` before commit/push requests
+- [ ] Escalate CF/IAM/workflow/security/governance changes for human review
+
+## MUST NOT
+
+- [ ] Skip governance because the task “seems small”
+- [ ] Commit secrets or weaken coverage/CI gates without human approval
+- [ ] Add network/SDK usage to the Edge handler without human approval
