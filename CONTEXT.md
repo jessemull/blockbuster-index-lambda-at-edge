@@ -83,7 +83,10 @@ These apply to **every change**. No exceptions without explicit human approval.
 | ----------- | -------------------------------------------------------------------- | -------------- |
 | **Commit**  | husky pre-commit → `lint-staged` (eslint + prettier on staged files) | Block commit   |
 | **Push**    | husky pre-push → `scripts/push_validate.sh` (`make push-validate`)   | Block push     |
-| **PR / CI** | lint, test (coverage), format:check, build/package, audit            | Block merge    |
+| **PR / CI** | `make preflight` (+ package on PR/merge/deploy)                      | Block merge\*  |
+| **Deploy**  | `make preflight` before S3/CloudFormation                            | Block deploy   |
+
+\*Requires GitHub branch protection with the **Preflight** check required — see `docs/CI_CD.md`.
 
 ### Preferred agent commands
 

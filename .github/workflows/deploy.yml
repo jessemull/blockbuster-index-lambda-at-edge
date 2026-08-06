@@ -30,13 +30,8 @@ jobs:
         run: |
           npm ci
 
-      - name: Lint Code
-        run: |
-          npm run lint
-
-      - name: Run Unit Tests
-        run: |
-          npm test
+      - name: Run Preflight
+        run: make preflight
 
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v6
@@ -52,10 +47,9 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: us-east-1
 
-      - name: Build Lambda Package
+      - name: Package Lambda
         run: |
           export NODE_ENV="${{ github.event.inputs.environment }}"
-          npm run build
           npm run package
 
       - name: Generate Artifact Name

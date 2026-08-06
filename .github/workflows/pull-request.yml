@@ -6,8 +6,8 @@ on:
       - main
 
 jobs:
-  build:
-    name: Build
+  preflight:
+    name: Preflight
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Code
@@ -22,88 +22,8 @@ jobs:
       - name: Install Dependencies
         run: npm ci
 
-      - name: Build & Package Lambda
-        run: |
-          export NODE_ENV=dev
-          npm run build
-          npm run package
-
-  lint:
-    name: Lint Code
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v6
-
-      - name: Install Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Run Linting
-        run: npm run lint
-
-  format:
-    name: Format Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v6
-
-      - name: Install Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Prettier Check
-        run: npm run format:check
-
-  audit:
-    name: Security Audit
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v6
-
-      - name: Install Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: npm audit
-        run: npm audit
-
-  test:
-    name: Run Unit Tests
-    needs: lint
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout Code
-        uses: actions/checkout@v6
-
-      - name: Install Node.js
-        uses: actions/setup-node@v6
-        with:
-          node-version: "24"
-          cache: "npm"
-
-      - name: Install Dependencies
-        run: npm ci
-
-      - name: Run Jest Tests
-        run: npm run test
+      - name: Run Preflight
+        run: make preflight
 
       - name: Upload Coverage Report
         uses: actions/upload-artifact@v6
@@ -111,3 +31,8 @@ jobs:
           name: coverage-report
           path: coverage
           retention-days: 7
+
+      - name: Package Lambda
+        run: |
+          export NODE_ENV=dev
+          npm run package

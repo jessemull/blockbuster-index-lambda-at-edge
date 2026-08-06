@@ -16,6 +16,7 @@
 ### Required
 
 - [ ] `make preflight` passes (lint, test, format-check, build, audit)
+- [ ] CI **Preflight** check is green
 - [ ] Tests added/updated for behavior changes
 - [ ] No secrets committed; `.env.example` updated if needed
 

@@ -38,10 +38,9 @@ Before approve/merge, these MUST be green:
 
 ```bash
 make preflight
-# or: npm run lint && npm test && npm run format:check && npm run build && npm audit
 ```
 
-CI on the PR must also be green (lint, test, format:check, build, audit).
+CI on the PR runs the same `make preflight` job (plus package). Merge/deploy workflows also run `make preflight` before shipping.
 
 ---
 
