@@ -8,9 +8,10 @@ The **Blockbuster Index Project Lambda@Edge** provides deep linking for the **Bl
 
 This repository is part of the **Blockbuster Index Project** which includes the following repositories:
 
-- **[Blockbuster Index MCP Lambda](https://github.com/jessemull/blockbuster-index-mcp-lambda)**: The **Blockbuster Index** MCP lambda.
+- **[Blockbuster Index Chat Bot](https://github.com/jessemull/blockbuster-index-chat-bot)**: The AI-powered chat bot (Tapey).
 - **[Blockbuster Index Project Client](https://github.com/jessemull/blockbuster-index)**: The **Blockbuster Index** NextJS client.
-- **[Blockbuster Index Lambda@Edge](https://github.com/jessemull/blockbuster-index-lambda-at-edge)**: The **Blockbuster Index** Lambda@Edge.
+- **[Blockbuster Index MCP Server](https://github.com/jessemull/blockbuster-index-mcp-server)**: The **Blockbuster Index** calculation server.
+- **[Blockbuster Index Lambda@Edge](https://github.com/jessemull/blockbuster-index-lambda-at-edge)**: The **Blockbuster Index** Lambda@Edge (this repository).
 
 ## Table of Contents
 

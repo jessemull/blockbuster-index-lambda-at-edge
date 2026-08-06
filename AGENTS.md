@@ -21,7 +21,7 @@
 | `docs/`                                      | Governance and domain documentation                        |
 | `.cursor/`                                   | Cursor rules, skills, commands                             |
 
-**Related product repos:** client site (`blockbuster-index`), MCP server — this repo only owns Edge routing.
+**Related product repos:** client site (`blockbuster-index`), chat bot (`blockbuster-index-chat-bot`), MCP server (`blockbuster-index-mcp-server`) — this repo only owns Edge routing.
 
 ---
 
