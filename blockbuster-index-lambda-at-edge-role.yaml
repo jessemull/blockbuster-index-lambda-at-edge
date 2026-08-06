@@ -42,7 +42,11 @@ Resources:
                   - logs:CreateLogGroup
                   - logs:CreateLogStream
                   - logs:PutLogEvents
-                Resource: "arn:aws:logs:*:*:log-group:/aws/lambda/*"
+                # Lambda@Edge log groups are named /aws/lambda/us-east-1.<function-name>
+                # and written in whichever Region the edge invocation runs.
+                Resource:
+                  - !Sub "arn:aws:logs:*:*:log-group:/aws/lambda/us-east-1.blockbuster-index-lambda-at-edge-${Environment}"
+                  - !Sub "arn:aws:logs:*:*:log-group:/aws/lambda/us-east-1.blockbuster-index-lambda-at-edge-${Environment}:*"
 
 Outputs:
   BlockbusterLambdaAtEdgeExecutionRoleArn:

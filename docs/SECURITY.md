@@ -18,7 +18,7 @@
 ## IAM
 
 - Role trust: `lambda.amazonaws.com` and `edgelambda.amazonaws.com`.
-- Prefer least privilege: S3 GetObject limited to the deploy bucket; logs limited to `/aws/lambda/*` log groups.
+- Prefer least privilege: S3 GetObject limited to the deploy bucket; logs limited to `/aws/lambda/us-east-1.blockbuster-index-lambda-at-edge-{env}` (Edge log-group naming).
 - Broadening IAM is a **human-review** change.
 
 ---

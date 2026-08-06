@@ -15,7 +15,7 @@
 | `deploy.yml`       | `workflow_dispatch` | `make preflight` + package + deploy to **dev** or **prod**       |
 | `rollback.yml`     | `workflow_dispatch` | redeploy prior S3 zip via change set (no preflight; intentional) |
 
-All build jobs use **Node 24** (`actions/setup-node`) and Node 24-compatible action majors (`checkout@v6`, `upload-artifact@v6`, `configure-aws-credentials@v6`).
+All build jobs use **Node 24** (`actions/setup-node`) and Node 24-compatible action majors (`checkout@v7`, `setup-node@v7`, `upload-artifact@v7`, `configure-aws-credentials@v6`).
 
 ---
 

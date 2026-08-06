@@ -38,6 +38,7 @@ export const handler = async (
 
   // Redirect non-canonical domain to canonical domain (blockbusterindex.com -> www.blockbusterindex.com)...
 
+  // Exact host match only — values with a port (e.g. apex:443) are treated as non-apex.
   const hostHeader = headers["host"]?.[0]?.value?.toLowerCase();
   if (hostHeader === "blockbusterindex.com") {
     const requestPath = request.uri || "/";

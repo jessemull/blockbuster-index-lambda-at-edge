@@ -191,6 +191,13 @@ describe("Redirect logic for canonical domain", () => {
     expect((result as CloudFrontRequest).uri).toBe("/about.html");
   });
 
+  it("does not redirect when the apex host includes a port", async () => {
+    const event = getEventWithHost("/about", "blockbusterindex.com:443");
+    const result = await handler(event);
+    expect(result).not.toHaveProperty("status", "301");
+    expect((result as CloudFrontRequest).uri).toBe("/about.html");
+  });
+
   it("rewrites when headers is undefined", async () => {
     const event = {
       Records: [
