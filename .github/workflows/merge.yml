@@ -16,8 +16,8 @@ jobs:
       - name: Install Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: "24"
+          cache: "npm"
 
       - name: Install Dependencies
         run: |
@@ -59,13 +59,13 @@ jobs:
           ARTIFACT_NAME="blockbuster-index-lambda-at-edge-${VERSION}-${COMMIT_HASH}-${TIMESTAMP}.zip"
           echo "Artifact: $ARTIFACT_NAME"
           echo "ARTIFACT_NAME=$ARTIFACT_NAME" >> $GITHUB_ENV
-          
+
       - name: Upload Lambda to S3
         run: |
           S3_BUCKET="blockbuster-index-lambda-at-edge-dev"
           aws s3 cp "dist/blockbuster-index-lambda-at-edge.zip" s3://${S3_BUCKET}/blockbuster-index-lambda-at-edge/${ARTIFACT_NAME} --region us-east-1
 
-      - name: Check Change Set Update/Create 
+      - name: Check Change Set Update/Create
         id: change_set_type
         run: |
           ENVIRONMENT="dev"
@@ -174,7 +174,7 @@ jobs:
             echo "Checking status..."
             sleep 10
           done
-      
+
       - name: Prune Backups
         run: |
           S3_BUCKET="blockbuster-index-lambda-at-edge-dev"

@@ -18,7 +18,7 @@ Resources:
     Type: AWS::Lambda::Function
     Properties:
       FunctionName: !Sub "blockbuster-index-lambda-at-edge-${Environment}"
-      Runtime: nodejs20.x
+      Runtime: nodejs24.x
       Role:
         Fn::ImportValue: !Sub "BlockbusterLambdaAtEdgeExecutionRoleArn-${Environment}"
       Handler: index.handler
@@ -28,7 +28,7 @@ Resources:
         S3Key: !Ref S3Key
       Timeout: 5
       MemorySize: 128
-      
+
   MyLambdaVersion:
     Type: AWS::Lambda::Version
     Properties:

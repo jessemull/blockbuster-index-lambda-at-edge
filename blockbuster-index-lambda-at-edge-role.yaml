@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: "2010-09-09"
 
 Parameters:
   Environment:
@@ -16,7 +16,7 @@ Resources:
     Properties:
       RoleName: !Sub "blockbuster-index-lambda-at-edge-role-${Environment}"
       AssumeRolePolicyDocument:
-        Version: '2012-10-17'
+        Version: "2012-10-17"
         Statement:
           - Effect: Allow
             Principal:
@@ -27,7 +27,7 @@ Resources:
       Policies:
         - PolicyName: LambdaBasicExecution
           PolicyDocument:
-            Version: '2012-10-17'
+            Version: "2012-10-17"
             Statement:
               - Effect: "Allow"
                 Action:
