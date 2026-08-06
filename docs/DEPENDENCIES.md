@@ -19,7 +19,7 @@
 
 | Package       | Constraint               | Why                                    |
 | ------------- | ------------------------ | -------------------------------------- |
-| `typescript`  | stay on 5.9.x (`<6.1`)   | `@typescript-eslint` / `ts-jest` peers |
+| `typescript`  | stay on 6.0.x (`<6.1`)   | `@typescript-eslint` / `ts-jest` peers |
 | `@types/node` | `^24`                    | Match Lambda/CI Node 24                |
 | Jest          | 30.x with `ts-jest` 29.x | Supported peer range                   |
 
