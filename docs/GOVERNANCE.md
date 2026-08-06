@@ -60,9 +60,9 @@ Resolve conflicts upward, never downward.
 
 ## Enforcement
 
-| Layer        | Mechanism                                                    |
-| ------------ | ------------------------------------------------------------ |
-| Local commit | husky + lint-staged + commitlint                             |
-| Local push   | `scripts/push_validate.sh`                                   |
-| CI           | PR workflow: lint, test, format:check, build, audit          |
-| Review       | `docs/REVIEW.md` severity tiers + `.cursor/skills/pr-review` |
+| Layer        | Mechanism                                                                  |
+| ------------ | -------------------------------------------------------------------------- |
+| Local commit | husky + lint-staged + commitlint                                           |
+| Local push   | `scripts/push_validate.sh` (`make preflight`)                              |
+| CI           | PR/merge/deploy: `make preflight` (+ package); require **Preflight** check |
+| Review       | `docs/REVIEW.md` severity tiers + `.cursor/skills/pr-review`               |
